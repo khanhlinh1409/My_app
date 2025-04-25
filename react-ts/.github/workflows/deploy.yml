@@ -3,35 +3,38 @@ name: Deploy Vite App to GitHub Pages
 on:
   push:
     branches:
-      - main  # Mỗi lần bạn push lên main, workflow sẽ chạy
+      - main
 
 permissions:
-  contents: write  # Cần thiết để ghi vào nhánh gh-pages
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: 📦 Checkout source code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 19
 
-      - name: Install dependencies
+      - name: 📥 Install dependencies
+        working-directory: react-ts
         run: npm install
 
-      - name: Set up environment variables
+      - name: 🔐 Set up environment variables
+        working-directory: react-ts
         run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> .env
 
-      - name: Build Vite app
+      - name: 🛠️ Build Vite app
+        working-directory: react-ts
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: react-ts/dist
