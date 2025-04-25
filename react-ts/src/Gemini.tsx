@@ -36,7 +36,7 @@ export function Gemini() {
         cols={50}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask Gemini..."
+        placeholder="Ask Gemini something..."
       />
       <br />
       <button className="btn btn-success" onClick={handleSubmit}>
