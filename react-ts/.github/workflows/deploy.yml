@@ -1,37 +1,37 @@
-name: Deploy to GitHub Pages
+name: Deploy Vite App to GitHub Pages
 
 on:
   push:
     branches:
-      - gh-pages # Bạn có thể thay đổi branch nếu không phải là `main`
+      - main  # Mỗi lần bạn push lên main, workflow sẽ chạy
+
+permissions:
+  contents: write  # Cần thiết để ghi vào nhánh gh-pages
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout mã nguồn của bạn
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-      # 2. Cài đặt Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "16" # Chọn version Node.js bạn dùng
+          node-version: 19
 
-      # 3. Cài đặt các dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Build project
-      - name: Build the project
+      - name: Set up environment variables
+        run: echo "VITE_API_KEY=${{ secrets.VITE_API_KEY }}" >> .env
+
+      - name: Build Vite app
         run: npm run build
 
-      # 5. Cấu hình secrets (sử dụng API key trong quá trình build)
       - name: Deploy to GitHub Pages
-        env:
-          VITE_API_KEY: ${{ secrets.VITE_API_KEY }} # Lấy API key từ GitHub Secrets
-        run: |
-          echo "API Key: $VITE_API_KEY"  # Kiểm tra xem key có đúng không (nên bỏ dòng này trong thực tế)
-          npm run deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
