@@ -33,5 +33,5 @@ jobs:
         env:
           VITE_API_KEY: ${{ secrets.VITE_API_KEY }} # Lấy API key từ GitHub Secrets
         run: |
-          echo "API Key: $GEMINI_API_KEY"  # Kiểm tra xem key có đúng không (nên bỏ dòng này trong thực tế)
+          echo "API Key: $VITE_API_KEY"  # Kiểm tra xem key có đúng không (nên bỏ dòng này trong thực tế)
           npm run deploy
