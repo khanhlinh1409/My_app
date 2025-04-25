@@ -24,7 +24,7 @@ export function Gemini() {
       setResponse(text);
     } catch (error) {
       console.error("Gemini API Error:", error);
-      setResponse("Có lỗi xảy ra khi gọi Gemini API");
+      setResponse("Error when calling Gemini API");
     }
   };
 
