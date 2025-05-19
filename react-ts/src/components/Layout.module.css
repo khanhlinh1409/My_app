@@ -1,0 +1,23 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  padding: 20px;
+}
+
+.left-panel {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.main-section {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+}

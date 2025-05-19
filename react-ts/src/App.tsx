@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from "react";
+//import { useEffect, useState } from "react";
+import Header from "./components/Header";
+import LeftPanel from "./components/LeftPanel";
+import Footer from "./components/Footer";
+import "./components/Layout.module.css";
+import CustomerList from "./components/CustomerList";
+import "bootstrap/dist/js/bootstrap.bundle.min.js"; // Import Bootstrap JS (bundle đã bao gồm Popper)
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [category, setCategory] = useState<string>("");
 
+  const handleCategoryChange = (category: string) => {
+    setCategory(category);
+  };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="layout-container">
+      <Header /> {/* Header */}
+      <div className="main-content">
+        <div className="col-md-3 col-12">
+          <LeftPanel onCategoryChange={handleCategoryChange} />{" "}
+          {/* Left Panel */}
+        </div>
+        <div className="main-section">
+          <CustomerList category={category} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <Footer /> {/* Footer */}
+    </div>
+  );
 }
-
-export default App
+export default App;
