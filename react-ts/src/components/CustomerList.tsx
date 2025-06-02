@@ -11,42 +11,62 @@ interface Customer {
 }
 
 interface Props {
-  category: string; // Marital status được chọn
+  category: string;
+  name: string;
 }
-const CustomerList: React.FC<Props> = ({ category }) => {
+
+const CustomerList: React.FC<Props> = ({ category, name }) => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // fetch("https://backend-iafz.onrender.com")
-    if (!category) return;
-    setLoading(true);
-    fetch(
-      "https://backend-iafz.onrender.com/customer/search?maritalStatus=" +
-        category
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomers(data.results);
-        setCount(data.count);
-      })
-      .catch((err) => console.error("API error:", err))
-      .finally(() => setLoading(false));
-  }, [category]);
+    const fetchData = async () => {
+      setLoading(true);
+      let url = "http://localhost:10000";
+      // if (!category && !name) {
+
+      //   // setCustomers([]);
+      //   // setCount(0);
+      //   // return;
+      // }
+      if (category !== "" || name) {
+        url = url + "/customer/search?";
+        console.log(category + " Name: " + name);
+      }
+      //let url = "https://backend-iafz.onrender.com/customer/search?";
+      const params = new URLSearchParams();
+
+      if (name) {
+        params.append("firstName", name);
+        params.append("lastName", name);
+      }
+      if (["Single", "Married", "Divorced", "Widowed"].includes(category)) {
+        params.append("maritalStatus", category);
+      }
+
+      try {
+        const response = await fetch(url + params.toString());
+        const data = await response.json();
+        setCustomers(data.results || []);
+        setCount(data.count || 0);
+      } catch (error) {
+        console.error("API error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [category, name]);
 
   return (
     <div style={{ padding: "20px" }}>
       <h1>👥 Customer list (Total: {count})</h1>
-
       {loading ? (
         <p>⏳ Loading...</p>
       ) : (
-        <table
-          border={1}
-          cellPadding={8}
-          cellSpacing={0}
-          style={{ width: "100%", borderCollapse: "collapse" }}>
+        <table className="table table-striped">
           <thead style={{ backgroundColor: "#eee" }}>
             <tr>
               <th>ID</th>
@@ -76,4 +96,5 @@ const CustomerList: React.FC<Props> = ({ category }) => {
     </div>
   );
 };
+
 export default CustomerList;
