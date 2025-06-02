@@ -23,18 +23,12 @@ const CustomerList: React.FC<Props> = ({ category, name }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      let url = "http://localhost:10000";
-      // if (!category && !name) {
-
-      //   // setCustomers([]);
-      //   // setCount(0);
-      //   // return;
-      // }
+      let url = "https://backend-iafz.onrender.com";
       if (category !== "" || name) {
         url = url + "/customer/search?";
         console.log(category + " Name: " + name);
       }
-      //let url = "https://backend-iafz.onrender.com/customer/search?";
+
       const params = new URLSearchParams();
 
       if (name) {
